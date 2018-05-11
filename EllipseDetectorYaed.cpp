@@ -85,7 +85,7 @@ int CEllipseDetectorYaed::FindMaxK(const int* v) const
 	int max_idx = 0;
 	for (int i = 0; i<ACC_R_SIZE; ++i)
 	{
-		(v[i] > max_val) ? max_val = v[i], max_idx = i : NULL;
+		(v[i] > max_val) ? max_val = v[i], max_idx = i : 0;
 	}
 
 	return max_idx + 90;
@@ -97,7 +97,7 @@ int CEllipseDetectorYaed::FindMaxN(const int* v) const
 	int max_idx = 0;
 	for (int i = 0; i<ACC_N_SIZE; ++i)
 	{
-		(v[i] > max_val) ? max_val = v[i], max_idx = i : NULL;
+		(v[i] > max_val) ? max_val = v[i], max_idx = i : 0;
 	}
 
 	return max_idx;
@@ -109,7 +109,7 @@ int CEllipseDetectorYaed::FindMaxA(const int* v) const
 	int max_idx = 0;
 	for (int i = 0; i<ACC_A_SIZE; ++i)
 	{
-		(v[i] > max_val) ? max_val = v[i], max_idx = i : NULL;
+		(v[i] > max_val) ? max_val = v[i], max_idx = i : 0;
 	}
 
 	return max_idx;
