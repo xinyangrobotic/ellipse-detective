@@ -15,3 +15,4 @@ g++ Main.cpp EllipseDetectorYaed.cpp common.cpp -o ellipse_det -std=c++11 `pkg-c
 ```sh
 ./ellipse_det
 ```
+# ellipse-detective
