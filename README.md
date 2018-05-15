@@ -1,6 +1,5 @@
 # fast_ellipse_detector
-This is the implementation in C++ of the paper: 'A fast and effective ellipse detector for embedded vision applications'.
-It runs on Ubuntu 16.04.  
+本程序是在Michele Fornaciari, Andrea Prati, Rita Cucchiara两位先生的代码基础上编写的
 
 Original author: mikispace (https://sourceforge.net/projects/yaed/)
 
