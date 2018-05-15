@@ -69,11 +69,11 @@ void OnVideo()
 		Mat3b resultImage = image.clone();
         vector<coordinate> ellipse_out;
 		yaed->DrawDetectedEllipses(resultImage, ellipse_out, ellsYaed);
-		for(auto &p:ellipse_out){
-			cout<<"x:"<<p.x<<endl
-				<<"y:"<<p.y<<endl
-				<<"order:"<<(float)p.order<<endl;
-		}
+//		for(auto &p:ellipse_out){
+//			cout<<"x:"<<p.x<<endl
+//				<<"y:"<<p.y<<endl
+//				<<"order:"<<(float)p.order<<endl;
+//		}
 		int num_ellipses = ellsYaed.size();
 //		计算中心圆的半径
 		float ellipses_a = 0;
@@ -167,7 +167,6 @@ void OnVideo()
 		}
 		namedWindow("Yaed",1);
 		imshow("Yaed", resultImage);
-		cout<<"ima:col"<< resultImage.cols<<"img:row:"<<resultImage.rows<<endl;
 
 
 		waitKey(10);

@@ -47,7 +47,7 @@ using namespace cv;
 //#define DISCARD_CONSTRAINT_CONVEXITY
 //#define DISCARD_CONSTRAINT_POSITION
 //#define DISCARD_CONSTRAINT_CENTER
-const float high = 0.75;//桌子单位
+const float high = 0.83;//桌子单位
 const float fx = 734.0686, fy = 737.9659;
 const float cx = 316.2778, cy = 232.4590;
 

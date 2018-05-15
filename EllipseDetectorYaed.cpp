@@ -1957,27 +1957,20 @@ void CEllipseDetectorYaed::DrawDetectedEllipses(Mat3b& output, vector<coordinate
 				e._rad * 180.0 / CV_PI, 0.0, 360.0, color, thickness);
 		int j = i/2;
 		const string text = to_string(j);
-		//在相机坐标系下椭圆圆心的坐标（相机坐标系横坐标为col,纵坐标为row）
-        float x = - (e._xc - cx) / fx * high;
+		//在相机坐标系下椭圆圆心的坐标（相机坐标系正东为x，正北为y）
+        float x =  (e._xc - cx) / fx * high;
         float y = - (e._yc - cy) / fy * high;
-		//将相机坐标系坐标转换为以摄像头所在中心的导航坐标系下坐标（正北为x,正东为y）
-		float x_n = y - 240;//240为图像高度的一半
-		float y_n = x - 320;//320为图像宽度的一半
+		//将相机坐标系坐标转换为以摄像头所在中心的导航坐标系下坐标（）
 		putText(output, text, Point(cvRound(e._xc), cvRound(e._yc)),CV_FONT_HERSHEY_SIMPLEX,1,Scalar(0,0,255),2,8);//给目标编号
-//			double x1 = e._xc + e._a * cos(e._rad);
-//			double y1 = e._yc + e._a * sin(e._rad);
-//			double x2 = e._xc - e._a * cos(e._rad);
-//			double y2 = e._yc - e._a * sin(e._rad);
-//			double l1 = sqrt(x1 * x1 + y1 * y1);
-//			double l2 = sqrt(x2 * x2 + y2 * y2);
+
         coordinate e_c;
-        e_c.x = x_n;
-        e_c.y = y_n;
+        e_c.x = x;
+        e_c.y = y;
         e_c.order = j;
         ellipse_out.push_back(e_c);
-//		cout << "the coordinate of the ellipse:" << endl << "x:" << e._xc << endl << "y:" << e._yc << endl << "a:"
-//			 << e._a << endl << "scores:" << e._score << endl;
-//        cout<<"real_x:"<<x_n<<endl<<"real_y:"<<y_n<<endl;
+		cout << "the coordinate of the ellipse:" << endl << "x:" << e._xc << endl << "y:" << e._yc << endl << "a:"
+			 << e._a << endl << "scores:" << e._score << endl;
+        cout<<"real_x:"<<x<<endl<<"real_y:"<<y<<endl;
 
 
 	}
