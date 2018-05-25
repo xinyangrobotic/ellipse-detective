@@ -1957,20 +1957,17 @@ void CEllipseDetectorYaed::DrawDetectedEllipses(Mat3b& output, vector<coordinate
 				e._rad * 180.0 / CV_PI, 0.0, 360.0, color, thickness);
 		int j = i/2;
 		const string text = to_string(j);
-		//在相机坐标系下椭圆圆心的坐标（相机坐标系正东为x，正北为y）
-        float x =  (e._xc - cx) / fx * high;
-        float y = - (e._yc - cy) / fy * high;
-		//将相机坐标系坐标转换为以摄像头所在中心的导航坐标系下坐标（）
 		putText(output, text, Point(cvRound(e._xc), cvRound(e._yc)),CV_FONT_HERSHEY_SIMPLEX,1,Scalar(0,0,255),2,8);//给目标编号
 
         coordinate e_c;
-        e_c.x = x;
-        e_c.y = y;
+        e_c.x = e._xc;
+        e_c.y = e._yc;
         e_c.order = j;
+        e_c.a = e._a;
         ellipse_out.push_back(e_c);
-		cout << "the coordinate of the ellipse:" << endl << "x:" << e._xc << endl << "y:" << e._yc << endl << "a:"
-			 << e._a << endl << "scores:" << e._score << endl;
-        cout<<"real_x:"<<x<<endl<<"real_y:"<<y<<endl;
+//		cout << "the coordinate of the ellipse:" << endl << "x:" << e._xc << endl << "y:" << e._yc << endl << "a:"
+//			 << e._a << endl << "scores:" << e._score << endl;
+//        cout<<"real_x:"<<x<<endl<<"real_y:"<<y<<endl;
 
 
 	}

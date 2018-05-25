@@ -55,6 +55,7 @@ typedef struct _coordinate{
     float_t x;
     float_t y;
     uint8_t order;
+    float_t a;
 }coordinate;
 // Data available after selection strategy. 
 // They are kept in an associative array to:
