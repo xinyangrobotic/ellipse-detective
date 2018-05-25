@@ -4,14 +4,17 @@
 Original author: mikispace (https://sourceforge.net/projects/yaed/)
 
 ### How to compile:
-
+编译过程，通过cmake的方式对程序进行编译
 ```sh
-g++ Main.cpp EllipseDetectorYaed.cpp common.cpp -o ellipse_det -std=c++11 `pkg-config --cflags --libs opencv`
+mkdir build
+cd build
+cmake ..
+make -j4
 ```
 
 ### How to run:
 
 ```sh
-./ellipse_det
+./fast_ellipse_detector
 ```
 # ellipse-detective
