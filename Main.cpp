@@ -74,8 +74,10 @@ void OnVideo()
         Mat gauss, thresh, canny;
         vector< vector<Point> > contours;
         vector< vector<Point> > rects;
-		if(ellipse_out.size() == 0)
-            continue;
+		if(ellipse_out.size() == 0){
+            namedWindow("Yaed",1);
+            imshow("Yaed", resultImage);;
+		}
         else {
             for(auto &p:ellipse_out){
 			cout<<"x:"<<p.x<<endl
