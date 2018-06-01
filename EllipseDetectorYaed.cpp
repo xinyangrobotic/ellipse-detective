@@ -1969,7 +1969,61 @@ void CEllipseDetectorYaed::DrawDetectedEllipses(Mat3b& output, vector<coordinate
 //			 << e._a << endl << "scores:" << e._score << endl;
 //        cout<<"real_x:"<<x<<endl<<"real_y:"<<y<<endl;
 
-
 	}
+}
 
+void visual_rec(Mat1b& gray, vector<coordinate>& ellipse_out0, vector<coordinate>& ellipse_out00, vector< vector<Point> >& contours0){
+    float areanum = 0.215;
+    threshold(gray, gray, 120, 255, CV_THRESH_BINARY);
+//  imshow("threshold", thresh);
+//  morphologyEx(gauss, gauss, MORPH_CLOSE, (5, 5) );
+//    Canny(thresh, canny, 50, 150, 3);
+	vector< vector<Point> > contours;
+	findContours(gray, contours, CV_RETR_LIST, CV_CHAIN_APPROX_NONE);
+    for(auto &p:ellipse_out0) {
+        for (int i = 0; i < contours.size(); i++) {
+            //拟合出轮廓外侧最小的矩形
+            RotatedRect rotate_rect = minAreaRect(contours[i]);
+            Point2f *vertices = new Point2f[4];
+            rotate_rect.points(vertices);
+            if (rotate_rect.size.height < (0.15 * p.a) || rotate_rect.size.height > (0.3 * p.a)
+                || abs(rotate_rect.center.x - p.x) > (0.172 * p.a) || abs(rotate_rect.center.y - p.y) > (0.172 * p.a))
+				continue;
+
+            	float x12 = (vertices[1].x + vertices[2].x) / 2;
+				float y12 = (vertices[1].y + vertices[2].y) / 2;
+				float xt12 = areanum * (rotate_rect.center.x - x12) + x12;
+				float yt12 = y12 - areanum * (y12 - rotate_rect.center.y);
+
+				float x30 = (vertices[3].x + vertices[0].x) / 2;
+				float y30 = (vertices[3].y + vertices[0].y) / 2;
+				float yt30 = areanum * (rotate_rect.center.y - y30) + y30;
+				float xt30 = x30 - areanum * (x30 - rotate_rect.center.x);
+
+				float x23 = (vertices[2].x + vertices[3].x) / 2;
+				float y23 = (vertices[2].y + vertices[3].y) / 2;
+				float xt23 = areanum * (rotate_rect.center.x - x23) + x23;
+				float yt23 = y23 - areanum * (y23 - rotate_rect.center.y);
+
+				float x01 = (vertices[1].x + vertices[0].x) / 2;
+				float y01 = (vertices[1].y + vertices[0].y) / 2;
+				float yt01 = areanum * (rotate_rect.center.y - y01) + y01;
+				float xt01 = x01 - areanum * (x01 - rotate_rect.center.x);
+
+				if (abs((gray.at<uchar>(yt12, xt12) - gray.at<uchar>(yt30, xt30))) < 60
+					&& abs((gray.at<uchar>(yt23, xt23) - gray.at<uchar>(yt01, xt01))) < 60) {
+					p.flag = true;
+//					cout << "decide:" << "T" << endl;
+				} else {
+					p.flag = false;
+//					cout << "decide:" << "F" << endl;
+				}
+				vector<Point> contour;
+				for (int i = 0; i < 4; i++) {
+					contour.push_back(vertices[i]);
+				}
+				contours0.push_back(contour);
+        }
+        ellipse_out00.push_back(p);
+    }
 }
