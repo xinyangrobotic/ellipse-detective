@@ -56,6 +56,7 @@ typedef struct _coordinate{
     float_t y;
     uint8_t order;
     float_t a;
+    int flag;
 }coordinate;
 // Data available after selection strategy. 
 // They are kept in an associative array to:
@@ -256,4 +257,4 @@ private:
 
 
 };
-
+void visual_rec(Mat1b& I, vector<coordinate>& ellipse_out, vector<coordinate>& ellipse_out1, vector< vector<Point> >& contours);
