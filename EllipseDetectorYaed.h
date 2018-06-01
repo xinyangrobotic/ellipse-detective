@@ -257,4 +257,9 @@ private:
 
 
 };
+/*字符识别函数：前两个变量为输入，后两个为输出
+ * 第一个变量为输入的灰度图
+ * 第二个变量为灰度图中椭圆检测后得到的vector
+ * 第三个变量为将输入的椭圆vector进行TF识别后，改变其flag，输出椭圆vector
+ * 第四个变量为字符所在区域轮廓点集，方便后续显示在图像中*/
 void visual_rec(Mat1b& I, vector<coordinate>& ellipse_out, vector<coordinate>& ellipse_out1, vector< vector<Point> >& contours);
