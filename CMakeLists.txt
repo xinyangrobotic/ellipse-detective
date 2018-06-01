@@ -13,7 +13,8 @@ add_executable(fast_ellipse_detector
         common.h
         EllipseDetectorYaed.cpp
         EllipseDetectorYaed.h
-        Main.cpp)
+        Main.cpp
+        )
 
 target_link_libraries(fast_ellipse_detector
         ${OpenCV_LIBRARIES}
