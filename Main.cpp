@@ -12,18 +12,12 @@ void OnVideo()
 
 	VideoCapture cap(0);
 	if(!cap.isOpened()) return;
-	cap.set(CV_CAP_PROP_FRAME_WIDTH,640);
-	cap.set(CV_CAP_PROP_FRAME_HEIGHT,360);
+
+	cap.set(CV_CAP_PROP_FRAME_WIDTH, 1920);
+	cap.set(CV_CAP_PROP_FRAME_HEIGHT, 1080);
 	cap.set(CAP_PROP_AUTOFOCUS,0);
-//	cap.set(CV_CAP_PROP_FRAME_WIDTH,640);
-//	cap.set(CV_CAP_PROP_FRAME_HEIGHT,480);
-//	double width0=cap.get(CV_CAP_PROP_FRAME_WIDTH);
-//	double height0=cap.get(CV_CAP_PROP_FRAME_HEIGHT);
-//	cout<<"width0"<<width0<<endl
-//						  <<"height0"<<height0<<endl;
 	int width = 640;
 	int height = 360;
-
 	// Parameters Settings (Sect. 4.2)
 	int		iThLength = 16;
 	float	fThObb = 3.0f;
@@ -58,28 +52,39 @@ void OnVideo()
 		iNs
 		);
 
-	Mat1b gray;
+	Mat1b gray, gray_big;
 	while(true)
 	{
 
 		Mat3b image;
 		cap >> image;
-		cvtColor(image, gray, COLOR_RGB2GRAY);
 
-		vector<Ellipse> ellsYaed;
+		Mat3b image_r;
+		resize(image,image_r,Size(640, 360), 0, 0, CV_INTER_LINEAR);
+
+		cvtColor(image_r, gray, COLOR_RGB2GRAY);
+		cvtColor(image, gray_big, COLOR_RGB2GRAY);
+
+		vector<Ellipse> ellsYaed, ellipse_in;
 		yaed->Detect(gray, ellsYaed);
 
 		vector<double> times = yaed->GetTimes();
 
-		Mat3b resultImage = image.clone();
+		Mat3b resultImage = image_r.clone();
+		vector<Mat1b> img_roi;
         vector<coordinate> ellipse_out, ellipse_TF;
-		yaed->DrawDetectedEllipses(resultImage, ellipse_out, ellsYaed);
+        yaed->OptimizEllipse(ellipse_in, ellsYaed);
+		yaed->DrawDetectedEllipses(resultImage, ellipse_out, ellipse_in);
 		cout<<"椭圆数量："<<ellipse_out.size()<<endl;
         vector< vector<Point> > contours;
 		if(ellipse_out.size() == 0){
 		}
-        else
-			visual_rec(gray, ellipse_out, ellipse_TF, contours);
+        else {
+			yaed->extracrROI(gray_big, ellipse_out, img_roi);
+
+			visual_rec(img_roi, ellipse_out, ellipse_TF, contours);
+
+		}
 		for(auto &p:ellipse_TF){
 		    cout<<"x:"<<p.x<<endl
                            <<"y"<<p.y<<endl
@@ -88,10 +93,17 @@ void OnVideo()
 		    for(auto &p:contours){
 				vector< vector<Point> > contours1;
 				contours1.push_back(p);
-				drawContours(resultImage, contours1, 0, Scalar(255, 255, 0), 1);
+				drawContours(image, contours1, 0, Scalar(255, 255, 0), 1);
 		    }
-			namedWindow("Yaed", 1);
-			imshow("Yaed", resultImage);
+//			for (auto i = 0; i < img_roi.size(); i++) {
+//				const string text = to_string(i);
+//				namedWindow("text", 1);
+//				imshow("text", img_roi[i]);
+//			}
+			namedWindow("原图", 1);
+			imshow("原图", image);
+			namedWindow("缩小", 1);
+			imshow("缩小", resultImage);
 			waitKey(10);
 
 	}
